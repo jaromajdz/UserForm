@@ -1,4 +1,4 @@
-.Modal {
+.Modal{
     position: fixed;
     z-index: 500;
     background-color: white;
@@ -9,51 +9,4 @@
     left: 15%;
     top: 30%;
     box-sizing: border-box;
-    transition: transform 0.3s ease-out;
-    
-  }
-
-.Open {
-    transform: translateY(0);
-}
-
-.Close {
-    transform: translateY(-100vh);
-}
-
-.Show {
-  animation: show 1s;
-  animation-iteration-count: 1;
-}
-
-.Hiden {
-  transform: translateY(-300vh);
-  animation: hide 0.8s;
-  animation-iteration-count: 1;
-}
-
-@media (min-width: 600px) {
-    .Modal {
-        width: 500px;
-        left: calc(50% - 250px);
-    }
-}
-
-@keyframes show {
-    0% {
-        transform: translateY(-100vh);
-      }
-
-    100% {
-        transform: translateY(0);
-    }
-}
-
-@keyframes hide {
-    0% {
-        transform: translateY(0);
-        }
-    100% {
-        transform: translateY(-100vh);
-    }
 }

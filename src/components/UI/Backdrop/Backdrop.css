@@ -6,19 +6,5 @@
   left: 0;
   top: 0;
   background-color: #000;
-  transition: all 0.3s ease;
-}
-
-.Open {
   opacity: 0.5;
-}
-
-.Close {
-  opacity: 0;
-
-}
-
-@keyframes Show {
-  from {opacity: 0;}
-  to {opacity: 0.5;}
 }

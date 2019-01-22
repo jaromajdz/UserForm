@@ -1,14 +1,28 @@
   import React, { Component } from 'react';
-  import {Route, Switch} from 'react-router-dom';
 
-  import NavigationItems from '../../components/Navigation/NavigationItems/NavigationItems'
+  import style from './Layout.css'
+  import Toolbar from '../../components/Navigation/Toolbar/Toolbar'
+  import Aux from '../Aux/Aux'
+  import {connect} from 'react-redux';
 
   class Layout extends Component {
 
       render(){
-        return <navbar>
-                  <NavigationItems/>
-                </navbar>
+        return <Aux>
+
+                <Toolbar isAuth = {this.props.isAuthenticated}/>
+
+                <main className={style.Content}>
+                  {this.props.children}
+                </main>
+             </Aux>
       }
   }
-export default Layout;
+
+const mapStateToProps =  state =>{
+  return{
+    isAuthenticated: state.userToken ? true : false
+  }
+}
+
+export default connect(mapStateToProps, null)(Layout);

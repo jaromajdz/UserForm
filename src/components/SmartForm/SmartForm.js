@@ -1,51 +1,59 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 
 import Input from "./Input/Input";
+import Button from "../UI/Button/Button"
 import styles from "./SmartForm.css";
 
-class Inputs extends Component {
+
+class SmartForm extends Component {
   state = {
-    form: {
-      email: {
-        elemenType: "input",
-        elementConfig: {
-          type: "email",
-          placeholder: "Your name:"
-        },
-        value: "",
-        isValid: false,
-        touched: false,
-        validationRules: {SmartForm
-          isRequired: true,
-          minLenght: 8,
-          regExp: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
-        },
-        isInvalidMessage: "Is is not valid email address!",
-        label: "Email address: "
-      },
-      surname: {
-        elemenType: "input",
-        elementConfig: {
-          type: "password",
-          placeholder: "Your password: "
-        },
-        value: "",
-        label: "Enter your password:",
-        isValid: false,
-        touched: false,
-        isInvalidMessage:
-          " Passwor should have minimum length 8 letters and contain one upprcase letter and special character.",
-        validationRules: {
-          isRequired: true,
-          minLenght: 8,
-          regExp: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
-        }
-      }
-    },
-    formIsValid: false
+    form: {},
+    formIsValid: false,
+    cancel: false
   };
 
+  componentDidMount(){
+    this.cancelChanges();
+  }
+
+static getDerivedStateFromProps(nextProps, prevState){
+    if(nextProps.cancel!==prevState.cancel){
+        return {cancel: nextProps.cancel}
+    } else {
+      return null;
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState){
+    if(this.state.cancel!==prevState.cancel){
+      this.cancelChanges();
+      //console.log(this.props.cancel, this.state.cancel)
+      //this.setState({cancel: this.props.cancel})
+    }
+  }
+
+  cancelChanges = ()=>{
+    this.setState({form: {...this.props.form}, formIsValid: (this.props.isValid? this.props.isValid : false)})
+  }
+
+  sendHandler = ()=>{
+      let data = {}
+
+      for (let key in this.state.form) {
+        data[key] = this.state.form[key].value
+      }
+
+    if(this.props.sendHandler){
+        this.props.sendHandler(data)
+      }
+
+    }
+
   onChangeHandler = (event, elemIndex) => {
+
+    event.preventDefault();
+
     const updateForm = {...this.state.form};
     const update = {...updateForm[elemIndex]};
 
@@ -84,7 +92,7 @@ class Inputs extends Component {
           default:
         }
       }
-      return isValid;SmartForm
+      return isValid;
     }
   }
 
@@ -107,18 +115,70 @@ class Inputs extends Component {
       );
     }
 
+
+
     return (
       <div className={styles.Form}>
         <form noValidate>
           {myForm}
-          <input
-            type="submit"
-            value="Submit"
-            disabled={!this.state.formIsValid}
-          />
         </form>
+      <div>
+       <Button
+          disabled={!this.state.formIsValid}
+          clicked = {this.sendHandler}
+          btnType = "Success"
+        >{this.props.sendButtonText}</Button>
+      <Button
+        disabled={!this.state.formIsValid}
+        clicked = {this.cancelChanges}
+        btnType = 'Danger'
+        >Cancel</Button>
+    </div>
       </div>
     );
   }
 }
+
+SmartForm.defaultProps = {
+  sendButtonText: 'Log in',
+  form: {
+        email: {
+        elemenType: "input",
+        elementConfig: {
+          type: "email",
+          placeholder: "Your name:"
+        },
+        value: "",
+        isValid: false,
+        touched: false,
+        validationRules: {
+          isRequired: true,
+          minLenght: 8,
+          regExp: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+        },
+        isInvalidMessage: "Is is not valid email address!",
+        label: "Email address: "
+      },
+      password: {
+        elemenType: "input",
+        elementConfig: {
+          type: "password",
+          placeholder: "Your password: "
+        },
+        value: "",
+        label: "Enter your password:",
+        isValid: false,
+        touched: false,
+        isInvalidMessage:
+          " Passwor should have minimum length 8 letters and contain one upprcase letter and special character.",
+        validationRules: {
+          isRequired: true,
+          minLenght: 8,
+          regExp: /^(?=.*[a-z])(?=.*[0-9])(?=.{8,})/
+        }
+      },
+    }
+}
+
+
 export default SmartForm;

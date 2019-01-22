@@ -2,3 +2,13 @@
   width: 300px;
   margin-left: 50px;
 }
+
+@media (max-width: 500px) {
+
+  .Form {
+    width: 300px;
+    margin-left: 10px;
+  }
+
+
+}

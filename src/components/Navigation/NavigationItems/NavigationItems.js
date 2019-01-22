@@ -3,7 +3,7 @@ import styles from './NavigationItems.css';
 import NavigationItem from './NavigationItem/NavigationItem';
 
 const navigationItems = (props) =>{
-
+    console.log('navigationItems', props.isAuthenticated)
     let path = (props.isAuthenticated ? "/logout" :  "/auth");
 
   return  ( <ul className={styles.NavigationItems}>
@@ -13,7 +13,10 @@ const navigationItems = (props) =>{
           : null
       }
           <NavigationItem link={path}>{props.isAuthenticated ? "Log out" : "Log in"}</NavigationItem>
-  </ul>)
+
+        {props.isAuthenticated ? null : <NavigationItem link="/singupform">Sign up</NavigationItem>}
+        {props.isAuthenticated ? <NavigationItem link="/editdata">Account</NavigationItem> : null}
+</ul>)
 
 };
 
